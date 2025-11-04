@@ -25,11 +25,24 @@ const pageTransition = { duration: 0.8, ease: "easeInOut" }; // 👈 slightly sl
 export default function App() {
   const [started, setStarted] = useState(false);
   const [step, setStep] = useState(1);
+  const [answers, setAnswers] = useState({});
 
-  const handleNext = () => {
-    if (step < 11) setStep(step + 1);
-    else alert("✅ Quiz completed! Thank you.");
-  };
+
+  const handleNext = (data) => {
+    
+    
+    setAnswers((prev) => ({
+    ...prev,
+    ...data, // ✅ merge field directly instead of nesting under step number
+    }));
+
+    if (step < 9) {
+      setStep(step + 1);
+    } else {
+      // ✅ After the last step, go to CostPage
+      setStep(10);
+    }
+  } ;
 
   const handleBack = () => {
     if (step === 1) setStarted(false);
@@ -37,8 +50,8 @@ export default function App() {
   };
 
   const startOver = () => {
-    setStarted(false); // always go back to the landing page
-  setStep(1);        // reset step properly
+    setStarted(false); 
+  setStep(1);        
   };
 
 
@@ -119,7 +132,7 @@ export default function App() {
           ) : step === 9 ? (
             <QuestionPage9 step={step} onNext={handleNext} onBack={handleBack} />
           ):(
-            <CostPage step={step} onRestart={startOver} />
+            <CostPage step={step} onRestart={startOver} answers={answers} />
           )}
         </MotionBox>
       </AnimatePresence>

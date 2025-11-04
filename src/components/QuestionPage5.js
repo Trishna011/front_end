@@ -92,7 +92,7 @@ export default function QuestionPage5({ onBack, onNext, step }) {
           rounded="full"
           isDisabled={!selectedOption}
           onClick={() => {
-            if (selectedOption) onNext();
+            if (selectedOption) onNext({Location : selectedOption});
           }}
         >
           Next

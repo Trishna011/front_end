@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const MotionBox = motion(Box);
 
-export default function QuestionPage9({ onBack, onNext, step }) {
+export default function QuestionPage9({ onBack, onNext }) {
   const [selectedOption, setSelectedOption] = useState(null);
 
 
@@ -26,7 +26,7 @@ export default function QuestionPage9({ onBack, onNext, step }) {
       color="gray.800"
     >
       <Heading mb={8} textAlign="center">
-        Would you like to do any structual changes?
+        What type of material would you like to use?
       </Heading>
 
       <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={8}>
@@ -37,16 +37,16 @@ export default function QuestionPage9({ onBack, onNext, step }) {
             rounded="xl"
             borderWidth="2px"
             borderColor={
-              selectedOption === option.id ? "teal.500" : "gray.200"
+              selectedOption === option.label ? "teal.500" : "gray.200"
             }
-            bg={selectedOption === option.id ? "teal.50" : "white"}
+            bg={selectedOption === option.label ? "teal.50" : "white"}
             color="gray.700"
             textAlign="center"
             fontWeight="semibold"
             cursor="pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
-            onClick={() => setSelectedOption(option.id)}
+            onClick={() => setSelectedOption(option.label)}
             transition={{ duration: 0.2 }}
           >
             {option.label}
@@ -69,7 +69,7 @@ export default function QuestionPage9({ onBack, onNext, step }) {
           rounded="full"
           isDisabled={!selectedOption}
           onClick={() => {
-            if (selectedOption) onNext(); // ✅ trigger next step in App.js
+            if (selectedOption) onNext({materialGrade : selectedOption }); // ✅ trigger next step in App.js
           }}
         >
           Next

@@ -18,7 +18,7 @@ export default function QuestionPage4({ onBack, onNext }) {
       return;
     }
     setShowError(false);
-    onNext();
+    onNext({bathrooms : bathrooms});
   };
 
   const handleInputChange = (e) => {

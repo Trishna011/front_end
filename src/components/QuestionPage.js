@@ -7,7 +7,6 @@ const MotionBox = motion(Box);
 export default function QuestionPage({ onBack, onNext, step }) {
   const [selectedOption, setSelectedOption] = useState(null);
 
-
   const options = [
     { id: 1, label: "Full renovation" },
     { id: 2, label: "Partial renovation" },
@@ -39,16 +38,16 @@ export default function QuestionPage({ onBack, onNext, step }) {
             rounded="xl"
             borderWidth="2px"
             borderColor={
-              selectedOption === option.id ? "teal.500" : "gray.200"
+              selectedOption === option.label ? "teal.500" : "gray.200"
             }
-            bg={selectedOption === option.id ? "teal.50" : "white"}
+            bg={selectedOption === option.label ? "teal.50" : "white"}
             color="gray.700"
             textAlign="center"
             fontWeight="semibold"
             cursor="pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
-            onClick={() => setSelectedOption(option.id)}
+            onClick={() => setSelectedOption(option.label)} // ✅ store label
             transition={{ duration: 0.2 }}
           >
             {option.label}
@@ -58,7 +57,7 @@ export default function QuestionPage({ onBack, onNext, step }) {
 
       <Box mt={10}>
         <Button
-          colorScheme="grey"
+          colorScheme="gray"
           rounded="full"
           onClick={onBack}
           mr={4}
@@ -66,12 +65,13 @@ export default function QuestionPage({ onBack, onNext, step }) {
         >
           Back
         </Button>
-         <Button
+
+        <Button
           colorScheme="teal"
           rounded="full"
           isDisabled={!selectedOption}
           onClick={() => {
-            if (selectedOption) onNext(); // ✅ trigger next step in App.js
+            if (selectedOption) onNext({ renovationType: selectedOption }); // ✅ send label text to App.js
           }}
         >
           Next

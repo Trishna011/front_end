@@ -19,7 +19,7 @@ export default function QuestionPage6({ onBack, onNext }) {
       return;
     }
     setShowError(false);
-    onNext();
+    onNext({sqft : sqft});
   };
 
   const handleInputChange = (e) => {

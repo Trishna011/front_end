@@ -15,10 +15,11 @@ export default function QuestionPage2({ onBack, onNext }) {
   const handleNext = () => {
     if (!canProceed) {
       setShowError(true);
+      
       return;
     }
     setShowError(false);
-    onNext();
+    onNext({size : size});
   };
 
   const handleInputChange = (e) => {

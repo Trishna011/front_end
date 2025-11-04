@@ -5,10 +5,10 @@ import { useState } from "react";
 const MotionBox = motion(Box);
 
 export default function QuestionPage7({ onBack, onNext }) {
-  const [budget, setBudget] = useState("");
+  const [addSqft, setAddSqft] = useState("");
   const [showError, setShowError] = useState(false);
 
-  const canProceed = budget.trim().length > 0;
+  const canProceed = addSqft.trim().length > 0;
 
   const handleNext = () => {
     if (!canProceed) {
@@ -16,7 +16,7 @@ export default function QuestionPage7({ onBack, onNext }) {
       return;
     }
     setShowError(false);
-    onNext();
+    onNext({addSqft : addSqft});
   };
 
   const handleInputChange = (e) => {
@@ -24,7 +24,7 @@ export default function QuestionPage7({ onBack, onNext }) {
 
     // 👇 Allow only digits (no letters, symbols, or spaces)
     if (/^\d*$/.test(value)) {
-      setBudget(value);
+      setAddSqft(value);
       if (showError) setShowError(false);
     }
   };
@@ -54,7 +54,7 @@ export default function QuestionPage7({ onBack, onNext }) {
           rounded="full"
           textAlign="center"
           fontSize="sm"
-          value={budget}
+          value={addSqft}
           onChange={handleInputChange}
           focusBorderColor="teal.500"
         />

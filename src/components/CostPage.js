@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 
 const MotionBox = motion(Box);
 
-export default function ResultPage({ cost, onRestart }) {
+export default function CostPage({ cost, onRestart, answers }) {
+  console.log("🧾 Final answers:", answers);
   return (
     <MotionBox
       key="result"
