@@ -11,6 +11,7 @@ import QuestionPage6 from "./components/QuestionPage6";
 import QuestionPage7 from "./components/QuestionPage7";
 import QuestionPage8 from "./components/QuestionPage8";
 import QuestionPage9 from "./components/QuestionPage9";
+import CostPage from "./components/CostPage";
 
 const MotionBox = motion(Box);
 
@@ -35,6 +36,12 @@ export default function App() {
     else setStep(step - 1);
   };
 
+  const startOver = () => {
+    setStarted(false); // always go back to the landing page
+  setStep(1);        // reset step properly
+  };
+
+
   // 👇 assign a single key for AnimatePresence to watch
   const currentKey = !started ? "landing" : `step-${step}`;
 
@@ -47,6 +54,43 @@ export default function App() {
       alignItems="center"
       justifyContent="center"
     >
+      {/* ✅ Progress bar at top */}
+    {started && (
+      <Box
+        position="absolute"
+        top={0}
+        left={0}
+        w="100%"
+        zIndex={10}
+        py={2}
+      >
+        <Box w="80%" maxW="700px" mx="auto">
+          <Box
+            color="whiteAlpha.800"
+            textAlign="center"
+            mb={1}
+            fontSize="sm"
+            letterSpacing="wide"
+          >
+            Step {step} of 9
+          </Box>
+          <Box
+            h="10px"
+            bg="gray.700"
+            rounded="full"
+            overflow="hidden"
+          >
+            <Box
+              h="100%"
+              bg="teal.400"
+              w={`${(step / 10) * 100}%`}
+              transition="width 0.5s ease-in-out"
+            />
+          </Box>
+        </Box>
+      </Box>
+    )}
+      
       {/* ✅ Single AnimatePresence handles all transitions */}
       <AnimatePresence mode="wait">
         <MotionBox
@@ -75,9 +119,7 @@ export default function App() {
           ) : step === 9 ? (
             <QuestionPage9 step={step} onNext={handleNext} onBack={handleBack} />
           ):(
-            <Box color="white" textAlign="center">
-              ✅ Quiz completed! Thank you.
-            </Box>
+            <CostPage step={step} onRestart={startOver} />
           )}
         </MotionBox>
       </AnimatePresence>
