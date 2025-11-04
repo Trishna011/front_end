@@ -10,6 +10,7 @@ import QuestionPage5 from "./components/QuestionPage5";
 import QuestionPage6 from "./components/QuestionPage6";
 import QuestionPage7 from "./components/QuestionPage7";
 import QuestionPage8 from "./components/QuestionPage8";
+import QuestionPage9 from "./components/QuestionPage9";
 
 const MotionBox = motion(Box);
 
@@ -71,6 +72,8 @@ export default function App() {
             <QuestionPage7 step={step} onNext={handleNext} onBack={handleBack} />
           ) : step === 8 ? (
             <QuestionPage8 step={step} onNext={handleNext} onBack={handleBack} />
+          ) : step === 9 ? (
+            <QuestionPage9 step={step} onNext={handleNext} onBack={handleBack} />
           ):(
             <Box color="white" textAlign="center">
               ✅ Quiz completed! Thank you.
