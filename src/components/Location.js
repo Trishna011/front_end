@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const MotionBox = motion(Box);
 
-export default function QuestionPage5({ onBack, onNext, step }) {
+export default function Location({ onBack, onNext, step }) {
   const [selectedOption, setSelectedOption] = useState("");
 
   const options = [
@@ -69,7 +69,11 @@ export default function QuestionPage5({ onBack, onNext, step }) {
         onChange={(e) => setSelectedOption(e.target.value)}
       >
         <option value="">Select a location</option>
-        {options.map((option, index) => (
+        {options
+          .slice()                
+          .sort((a, b) => a.localeCompare(b)) 
+          .map((option, index) => (
+
           <option key={index} value={option}>
             {option}
           </option>

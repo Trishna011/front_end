@@ -4,13 +4,14 @@ import { useState } from "react";
 
 const MotionBox = motion(Box);
 
-export default function QuestionPage8({ onBack, onNext, step }) {
+export default function MaterialGrade({ onBack, onNext }) {
   const [selectedOption, setSelectedOption] = useState(null);
 
 
   const options = [
-    { id: 1, label: "Yes" },
-    { id: 2, label: "No" },
+    { id: 1, label: "High-end" },
+    { id: 2, label: "Mid-range" },
+    { id: 3, label: "Budget-friendly" }
   ];
 
   return (
@@ -24,10 +25,10 @@ export default function QuestionPage8({ onBack, onNext, step }) {
       color="gray.800"
     >
       <Heading mb={8} textAlign="center">
-        Would you like to do any structual changes?
+        What type of material would you like to use?
       </Heading>
 
-      <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={8}>
+      <SimpleGrid columns={1} spacing={4}>
         {options.map((option) => (
           <MotionBox
             key={option.id}
@@ -67,7 +68,7 @@ export default function QuestionPage8({ onBack, onNext, step }) {
           rounded="full"
           isDisabled={!selectedOption}
           onClick={() => {
-            if (selectedOption) onNext({structuralChange : selectedOption}); 
+            if (selectedOption) onNext({materialGrade : selectedOption }); // ✅ trigger next step in App.js
           }}
         >
           Next

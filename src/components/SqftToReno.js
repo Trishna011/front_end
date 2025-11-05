@@ -4,11 +4,14 @@ import { useState } from "react";
 
 const MotionBox = motion(Box);
 
-export default function QuestionPage7({ onBack, onNext }) {
-  const [addSqft, setAddSqft] = useState("");
+export default function SqftToReno({ onBack, onNext }) {
+  const [sqft, setSqft] = useState("");
   const [showError, setShowError] = useState(false);
 
-  const canProceed = addSqft.trim().length > 0;
+  // ✅ Validation checks
+  const isEmpty = sqft.trim().length === 0;
+  const isZeroOrNegative = !isEmpty && Number(sqft) <= 0;
+  const canProceed = !isEmpty && !isZeroOrNegative;
 
   const handleNext = () => {
     if (!canProceed) {
@@ -16,22 +19,29 @@ export default function QuestionPage7({ onBack, onNext }) {
       return;
     }
     setShowError(false);
-    onNext({addSqft : addSqft});
+    onNext({sqft : sqft});
   };
 
   const handleInputChange = (e) => {
     const value = e.target.value;
 
-    // 👇 Allow only digits (no letters, symbols, or spaces)
+    // ✅ Allow only digits
     if (/^\d*$/.test(value)) {
-      setAddSqft(value);
+      setSqft(value);
       if (showError) setShowError(false);
     }
   };
 
+  // ✅ Choose the right error message
+  let errorMessage = "";
+  if (showError) {
+    if (isEmpty) errorMessage = "Please enter a value.";
+    else if (isZeroOrNegative) errorMessage = "Please enter a number greater than 0.";
+  }
+
   return (
     <MotionBox
-      key="question7"
+      key="question6"
       initial={{ opacity: 0, y: 80 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -80 }}
@@ -44,24 +54,25 @@ export default function QuestionPage7({ onBack, onNext }) {
       maxW="700px"
       color="gray.800"
     >
-      <Heading mb={6}>Would you like to add sqft to the property?</Heading>
+      <Heading mb={6}>Number of sqft to be renovated?</Heading>
 
       {/* ✅ Input */}
       <Field.Root invalid={showError && !canProceed}>
         <Input
-          placeholder="Enter the sqft to be added - Enter 0 if none"
+          type="text"
+          placeholder="Enter the sqft to be renovated"
           size="lg"
           rounded="full"
           textAlign="center"
           fontSize="sm"
-          value={addSqft}
+          value={sqft}
           onChange={handleInputChange}
           focusBorderColor="teal.500"
         />
       </Field.Root>
 
-      {/* ✅ Error text centered under the input */}
-      {showError && !canProceed && (
+      {/* ✅ Dynamic Error Message */}
+      {showError && errorMessage && (
         <Box display="flex" justifyContent="center">
           <Text
             mt={2}
@@ -70,12 +81,12 @@ export default function QuestionPage7({ onBack, onNext }) {
             width="fit-content"
             textAlign="center"
           >
-            Please enter a value
+            {errorMessage}
           </Text>
         </Box>
       )}
 
-      {/* ✅ Navigation buttons */}
+      {/* ✅ Buttons */}
       <Box mt={8}>
         <Button
           colorScheme="gray"

@@ -4,21 +4,22 @@ import { useState } from "react";
 
 const MotionBox = motion(Box);
 
-export default function QuestionPage3({ onBack, onNext }) {
-  const [bedrooms, setBedrooms] = useState("");
+export default function PropertySize({ onBack, onNext }) {
+  const [size, setSize] = useState("");
   const [showError, setShowError] = useState(false);
 
-  const isEmpty = bedrooms.trim().length === 0;
-  const isZeroOrNegative = !isEmpty && Number(bedrooms) <= 0;
+  const isEmpty = size.trim().length === 0;
+  const isZeroOrNegative = !isEmpty && Number(size) <= 0;
   const canProceed = !isEmpty && !isZeroOrNegative;
 
   const handleNext = () => {
     if (!canProceed) {
       setShowError(true);
+      
       return;
     }
     setShowError(false);
-    onNext();
+    onNext({size : size});
   };
 
   const handleInputChange = (e) => {
@@ -26,7 +27,7 @@ export default function QuestionPage3({ onBack, onNext }) {
 
     // ✅ Allow only digits
     if (/^\d*$/.test(value)) {
-      setBedrooms(value);
+      setSize(value);
       if (showError) setShowError(false);
     }
   };
@@ -40,7 +41,7 @@ export default function QuestionPage3({ onBack, onNext }) {
 
   return (
     <MotionBox
-      key="question3"
+      key="question2"
       initial={{ opacity: 0, y: 80 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -80 }}
@@ -53,17 +54,17 @@ export default function QuestionPage3({ onBack, onNext }) {
       maxW="700px"
       color="gray.800"
     >
-      <Heading mb={6}>What is the number of bedrooms?</Heading>
+      <Heading mb={6}>What is the property size?</Heading>
 
       {/* ✅ Input */}
       <Field.Root invalid={showError && !canProceed}>
         <Input
-          placeholder="Enter the number of bedrooms"
+          placeholder="Enter the property size in sqft"
           size="lg"
           rounded="full"
           textAlign="center"
           fontSize="sm"
-          value={bedrooms}
+          value={size}
           onChange={handleInputChange}
           focusBorderColor="teal.500"
         />

@@ -4,13 +4,12 @@ import { useState } from "react";
 
 const MotionBox = motion(Box);
 
-export default function QuestionPage6({ onBack, onNext }) {
-  const [sqft, setSqft] = useState("");
+export default function NumBathrooms({ onBack, onNext }) {
+  const [bathrooms, setBathrooms] = useState("");
   const [showError, setShowError] = useState(false);
 
-  // ✅ Validation checks
-  const isEmpty = sqft.trim().length === 0;
-  const isZeroOrNegative = !isEmpty && Number(sqft) <= 0;
+  const isEmpty = bathrooms.trim().length === 0;
+  const isZeroOrNegative = !isEmpty && Number(bathrooms) <= 0;
   const canProceed = !isEmpty && !isZeroOrNegative;
 
   const handleNext = () => {
@@ -19,7 +18,7 @@ export default function QuestionPage6({ onBack, onNext }) {
       return;
     }
     setShowError(false);
-    onNext({sqft : sqft});
+    onNext({bathrooms : bathrooms});
   };
 
   const handleInputChange = (e) => {
@@ -27,7 +26,7 @@ export default function QuestionPage6({ onBack, onNext }) {
 
     // ✅ Allow only digits
     if (/^\d*$/.test(value)) {
-      setSqft(value);
+      setBathrooms(value);
       if (showError) setShowError(false);
     }
   };
@@ -39,9 +38,10 @@ export default function QuestionPage6({ onBack, onNext }) {
     else if (isZeroOrNegative) errorMessage = "Please enter a number greater than 0.";
   }
 
+
   return (
     <MotionBox
-      key="question6"
+      key="question4"
       initial={{ opacity: 0, y: 80 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -80 }}
@@ -54,18 +54,17 @@ export default function QuestionPage6({ onBack, onNext }) {
       maxW="700px"
       color="gray.800"
     >
-      <Heading mb={6}>Number of sqft to be renovated?</Heading>
+      <Heading mb={6}>What is the number of bathrooms?</Heading>
 
       {/* ✅ Input */}
       <Field.Root invalid={showError && !canProceed}>
         <Input
-          type="text"
-          placeholder="Enter the sqft to be renovated"
+          placeholder="Enter the number of bathrooms"
           size="lg"
           rounded="full"
           textAlign="center"
           fontSize="sm"
-          value={sqft}
+          value={bathrooms}
           onChange={handleInputChange}
           focusBorderColor="teal.500"
         />
@@ -86,7 +85,7 @@ export default function QuestionPage6({ onBack, onNext }) {
         </Box>
       )}
 
-      {/* ✅ Buttons */}
+      {/* ✅ Navigation buttons */}
       <Box mt={8}>
         <Button
           colorScheme="gray"

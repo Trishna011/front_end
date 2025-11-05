@@ -4,13 +4,11 @@ import { useState } from "react";
 
 const MotionBox = motion(Box);
 
-export default function QuestionPage4({ onBack, onNext }) {
-  const [bathrooms, setBathrooms] = useState("");
+export default function SqftToAdd({ onBack, onNext }) {
+  const [addSqft, setAddSqft] = useState("");
   const [showError, setShowError] = useState(false);
 
-  const isEmpty = bathrooms.trim().length === 0;
-  const isZeroOrNegative = !isEmpty && Number(bathrooms) <= 0;
-  const canProceed = !isEmpty && !isZeroOrNegative;
+  const canProceed = addSqft.trim().length > 0;
 
   const handleNext = () => {
     if (!canProceed) {
@@ -18,30 +16,22 @@ export default function QuestionPage4({ onBack, onNext }) {
       return;
     }
     setShowError(false);
-    onNext({bathrooms : bathrooms});
+    onNext({addSqft : addSqft});
   };
 
   const handleInputChange = (e) => {
     const value = e.target.value;
 
-    // ✅ Allow only digits
+    // 👇 Allow only digits (no letters, symbols, or spaces)
     if (/^\d*$/.test(value)) {
-      setBathrooms(value);
+      setAddSqft(value);
       if (showError) setShowError(false);
     }
   };
 
-  // ✅ Choose the right error message
-  let errorMessage = "";
-  if (showError) {
-    if (isEmpty) errorMessage = "Please enter a value.";
-    else if (isZeroOrNegative) errorMessage = "Please enter a number greater than 0.";
-  }
-
-
   return (
     <MotionBox
-      key="question4"
+      key="question7"
       initial={{ opacity: 0, y: 80 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -80 }}
@@ -54,24 +44,24 @@ export default function QuestionPage4({ onBack, onNext }) {
       maxW="700px"
       color="gray.800"
     >
-      <Heading mb={6}>What is the number of bathrooms?</Heading>
+      <Heading mb={6}>Are you doing an extension?</Heading>
 
       {/* ✅ Input */}
       <Field.Root invalid={showError && !canProceed}>
         <Input
-          placeholder="Enter the number of bathrooms"
+          placeholder="Enter the sqft to be added - Enter 0 if none"
           size="lg"
           rounded="full"
           textAlign="center"
-          fontSize="sm"
-          value={bathrooms}
+          fontSize="2xs"
+          value={addSqft}
           onChange={handleInputChange}
           focusBorderColor="teal.500"
         />
       </Field.Root>
 
-      {/* ✅ Dynamic Error Message */}
-      {showError && errorMessage && (
+      {/* ✅ Error text centered under the input */}
+      {showError && !canProceed && (
         <Box display="flex" justifyContent="center">
           <Text
             mt={2}
@@ -80,7 +70,7 @@ export default function QuestionPage4({ onBack, onNext }) {
             width="fit-content"
             textAlign="center"
           >
-            {errorMessage}
+            Please enter a value
           </Text>
         </Box>
       )}

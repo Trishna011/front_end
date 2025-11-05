@@ -4,15 +4,16 @@ import { useState } from "react";
 
 const MotionBox = motion(Box);
 
-export default function QuestionPage9({ onBack, onNext }) {
+export default function RenoType({ onBack, onNext, step }) {
   const [selectedOption, setSelectedOption] = useState(null);
 
-
   const options = [
-    { id: 1, label: "Budget-friendly" },
-    { id: 2, label: "Mid-range" },
-    { id: 3, label: "High-end" },
-    { id: 4, label: "Luxury" },
+    { id: 1, label: "Full renovation" },
+    { id: 2, label: "Bedroom" },
+    { id: 3, label: "Kitchen" },
+    { id: 4, label: "Bathroom" },
+    { id: 5, label: "Living room" },
+    { id: 6, label: "Other/Custom" },
   ];
 
   return (
@@ -26,7 +27,7 @@ export default function QuestionPage9({ onBack, onNext }) {
       color="gray.800"
     >
       <Heading mb={8} textAlign="center">
-        What type of material would you like to use?
+        What would you like to renovate?
       </Heading>
 
       <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={8}>
@@ -46,7 +47,7 @@ export default function QuestionPage9({ onBack, onNext }) {
             cursor="pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
-            onClick={() => setSelectedOption(option.label)}
+            onClick={() => setSelectedOption(option.label)} // ✅ store label
             transition={{ duration: 0.2 }}
           >
             {option.label}
@@ -56,7 +57,7 @@ export default function QuestionPage9({ onBack, onNext }) {
 
       <Box mt={10}>
         <Button
-          colorScheme="grey"
+          colorScheme="gray"
           rounded="full"
           onClick={onBack}
           mr={4}
@@ -64,12 +65,13 @@ export default function QuestionPage9({ onBack, onNext }) {
         >
           Back
         </Button>
-         <Button
+
+        <Button
           colorScheme="teal"
           rounded="full"
           isDisabled={!selectedOption}
           onClick={() => {
-            if (selectedOption) onNext({materialGrade : selectedOption }); // ✅ trigger next step in App.js
+            if (selectedOption) onNext({ renovationType: selectedOption }); // ✅ send label text to App.js
           }}
         >
           Next

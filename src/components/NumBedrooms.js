@@ -4,22 +4,21 @@ import { useState } from "react";
 
 const MotionBox = motion(Box);
 
-export default function QuestionPage2({ onBack, onNext }) {
-  const [size, setSize] = useState("");
+export default function NumBedrooms({ onBack, onNext }) {
+  const [bedrooms, setBedrooms] = useState("");
   const [showError, setShowError] = useState(false);
 
-  const isEmpty = size.trim().length === 0;
-  const isZeroOrNegative = !isEmpty && Number(size) <= 0;
+  const isEmpty = bedrooms.trim().length === 0;
+  const isZeroOrNegative = !isEmpty && Number(bedrooms) <= 0;
   const canProceed = !isEmpty && !isZeroOrNegative;
 
   const handleNext = () => {
     if (!canProceed) {
       setShowError(true);
-      
       return;
     }
     setShowError(false);
-    onNext({size : size});
+    onNext();
   };
 
   const handleInputChange = (e) => {
@@ -27,7 +26,7 @@ export default function QuestionPage2({ onBack, onNext }) {
 
     // ✅ Allow only digits
     if (/^\d*$/.test(value)) {
-      setSize(value);
+      setBedrooms(value);
       if (showError) setShowError(false);
     }
   };
@@ -41,7 +40,7 @@ export default function QuestionPage2({ onBack, onNext }) {
 
   return (
     <MotionBox
-      key="question2"
+      key="question3"
       initial={{ opacity: 0, y: 80 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -80 }}
@@ -54,17 +53,17 @@ export default function QuestionPage2({ onBack, onNext }) {
       maxW="700px"
       color="gray.800"
     >
-      <Heading mb={6}>What is the property size?</Heading>
+      <Heading mb={6}>What is the number of bedrooms?</Heading>
 
       {/* ✅ Input */}
       <Field.Root invalid={showError && !canProceed}>
         <Input
-          placeholder="Enter the property size in sqft"
+          placeholder="Enter the number of bedrooms"
           size="lg"
           rounded="full"
           textAlign="center"
           fontSize="sm"
-          value={size}
+          value={bedrooms}
           onChange={handleInputChange}
           focusBorderColor="teal.500"
         />

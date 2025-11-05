@@ -2,15 +2,15 @@ import { Box } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import LandingPage from "./components/LandingPage";
-import QuestionPage from "./components/QuestionPage";
-import QuestionPage2 from "./components/QuestionPage2";
-import QuestionPage3 from "./components/QuestionPage3";
-import QuestionPage4 from "./components/QuestionPage4";
-import QuestionPage5 from "./components/QuestionPage5";
-import QuestionPage6 from "./components/QuestionPage6";
-import QuestionPage7 from "./components/QuestionPage7";
-import QuestionPage8 from "./components/QuestionPage8";
-import QuestionPage9 from "./components/QuestionPage9";
+import RenoType from "./components/RenoType";
+import PropertySize from "./components/PropertySize";
+import NumBedrooms from "./components/NumBedrooms";
+import NumBathrooms from "./components/NumBathrooms";
+import Location from "./components/Location";
+import SqftToReno from "./components/SqftToReno";
+import SqftToAdd from "./components/SqftToAdd";
+import StructChanges from "./components/StructChanges";
+import MaterialGrade from "./components/MaterialGrade";
 import CostPage from "./components/CostPage";
 
 const MotionBox = motion(Box);
@@ -114,23 +114,23 @@ export default function App() {
           {!started ? (
             <LandingPage onStart={() => setStarted(true)} />
           ) : step === 1 ? (
-            <QuestionPage step={step} onNext={handleNext} onBack={handleBack} />
+            <RenoType step={step} onNext={handleNext} onBack={handleBack} />
           ) : step === 2 ? (
-            <QuestionPage2 step={step} onNext={handleNext} onBack={handleBack} />
+            <SqftToAdd step={step} onNext={handleNext} onBack={handleBack} />
           ) : step === 3 ? (
-            <QuestionPage3 step={step} onNext={handleNext} onBack={handleBack} />
+            <StructChanges step={step} onNext={handleNext} onBack={handleBack} />
           ) : step === 4 ? (
-            <QuestionPage4 step={step} onNext={handleNext} onBack={handleBack} />
+            <SqftToReno step={step} onNext={handleNext} onBack={handleBack} />
           ) : step === 5 ? (
-            <QuestionPage5 step={step} onNext={handleNext} onBack={handleBack} />
+            <MaterialGrade step={step} onNext={handleNext} onBack={handleBack} />
           ) : step === 6 ? (
-            <QuestionPage6 step={step} onNext={handleNext} onBack={handleBack} />
+            <PropertySize step={step} onNext={handleNext} onBack={handleBack} />
           ) : step === 7 ? (
-            <QuestionPage7 step={step} onNext={handleNext} onBack={handleBack} />
+            <Location step={step} onNext={handleNext} onBack={handleBack} />
           ) : step === 8 ? (
-            <QuestionPage8 step={step} onNext={handleNext} onBack={handleBack} />
+            <NumBathrooms step={step} onNext={handleNext} onBack={handleBack} />
           ) : step === 9 ? (
-            <QuestionPage9 step={step} onNext={handleNext} onBack={handleBack} />
+            <NumBedrooms step={step} onNext={handleNext} onBack={handleBack} />
           ):(
             <CostPage step={step} onRestart={startOver} answers={answers} />
           )}

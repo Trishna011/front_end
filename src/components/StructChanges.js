@@ -4,16 +4,13 @@ import { useState } from "react";
 
 const MotionBox = motion(Box);
 
-export default function QuestionPage({ onBack, onNext, step }) {
+export default function StructChanges({ onBack, onNext, step }) {
   const [selectedOption, setSelectedOption] = useState(null);
 
+
   const options = [
-    { id: 1, label: "Full renovation" },
-    { id: 2, label: "Partial renovation" },
-    { id: 3, label: "Kitchen renovation" },
-    { id: 4, label: "Bathroom renovation" },
-    { id: 5, label: "Living room renovation" },
-    { id: 6, label: "Kitchen and Bathroom" },
+    { id: 1, label: "Yes" },
+    { id: 2, label: "No" },
   ];
 
   return (
@@ -27,7 +24,7 @@ export default function QuestionPage({ onBack, onNext, step }) {
       color="gray.800"
     >
       <Heading mb={8} textAlign="center">
-        What type of renovation are you planning?
+        Would you like to do any structual changes?
       </Heading>
 
       <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={8}>
@@ -47,7 +44,7 @@ export default function QuestionPage({ onBack, onNext, step }) {
             cursor="pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
-            onClick={() => setSelectedOption(option.label)} // ✅ store label
+            onClick={() => setSelectedOption(option.label)}
             transition={{ duration: 0.2 }}
           >
             {option.label}
@@ -57,7 +54,7 @@ export default function QuestionPage({ onBack, onNext, step }) {
 
       <Box mt={10}>
         <Button
-          colorScheme="gray"
+          colorScheme="grey"
           rounded="full"
           onClick={onBack}
           mr={4}
@@ -65,13 +62,12 @@ export default function QuestionPage({ onBack, onNext, step }) {
         >
           Back
         </Button>
-
-        <Button
+         <Button
           colorScheme="teal"
           rounded="full"
           isDisabled={!selectedOption}
           onClick={() => {
-            if (selectedOption) onNext({ renovationType: selectedOption }); // ✅ send label text to App.js
+            if (selectedOption) onNext({structuralChange : selectedOption}); 
           }}
         >
           Next
