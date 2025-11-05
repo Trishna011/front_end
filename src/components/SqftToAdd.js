@@ -49,11 +49,11 @@ export default function SqftToAdd({ onBack, onNext }) {
       {/* ✅ Input */}
       <Field.Root invalid={showError && !canProceed}>
         <Input
-          placeholder="Enter the sqft to be added - Enter 0 if none"
+          placeholder="Enter sqft to add - 0 if none"
           size="lg"
           rounded="full"
           textAlign="center"
-          fontSize="2xs"
+          fontSize="sm"
           value={addSqft}
           onChange={handleInputChange}
           focusBorderColor="teal.500"
