@@ -130,9 +130,9 @@ export default function App() {
           ) : step === 8 ? (
             <NumBathrooms step={step} onNext={handleNext} onBack={handleBack} />
           ) : step === 9 ? (
-            <NumBedrooms step={step} onNext={handleNext} onBack={handleBack} />
+            <NumBedrooms step={step} onNext={handleNext} onBack={handleBack} answers={answers} />
           ):(
-            <CostPage step={step} onRestart={startOver} answers={answers} />
+            <CostPage step={step} onRestart={startOver} />
           )}
         </MotionBox>
       </AnimatePresence>

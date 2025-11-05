@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const MotionBox = motion(Box);
 
-export default function NumBedrooms({ onBack, onNext }) {
+export default function NumBedrooms({ onBack, onNext, answers }) {
   const [bedrooms, setBedrooms] = useState("");
   const [showError, setShowError] = useState(false);
 
@@ -12,31 +12,43 @@ export default function NumBedrooms({ onBack, onNext }) {
   const isZeroOrNegative = !isEmpty && Number(bedrooms) <= 0;
   const canProceed = !isEmpty && !isZeroOrNegative;
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (!canProceed) {
       setShowError(true);
       return;
     }
+
     setShowError(false);
-    onNext();
+
+    // ✅ merge latest answer
+    const updatedAnswers = { ...answers, bedrooms };
+
+    // ✅ send to backend API (Express → Python)
+    try {
+      const res = await fetch("http://localhost:4000/api/estimate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedAnswers),
+      });
+
+      const data = await res.json();
+      // `data` should include something like { estimated_cost: 12345 }
+
+      // ✅ pass both the bedrooms and the returned cost to next step
+      onNext({ bedrooms, cost: data.estimated_cost });
+    } catch (err) {
+      console.error("Error fetching estimate:", err);
+      onNext({ bedrooms, cost: 0 }); // fallback
+    }
   };
 
   const handleInputChange = (e) => {
     const value = e.target.value;
-
-    // ✅ Allow only digits
     if (/^\d*$/.test(value)) {
       setBedrooms(value);
       if (showError) setShowError(false);
     }
   };
-
-  // ✅ Choose the right error message
-  let errorMessage = "";
-  if (showError) {
-    if (isEmpty) errorMessage = "Please enter a value.";
-    else if (isZeroOrNegative) errorMessage = "Please enter a number greater than 0.";
-  }
 
   return (
     <MotionBox
@@ -55,7 +67,6 @@ export default function NumBedrooms({ onBack, onNext }) {
     >
       <Heading mb={6}>What is the number of bedrooms?</Heading>
 
-      {/* ✅ Input */}
       <Field.Root invalid={showError && !canProceed}>
         <Input
           placeholder="Enter the number of bedrooms"
@@ -69,22 +80,16 @@ export default function NumBedrooms({ onBack, onNext }) {
         />
       </Field.Root>
 
-      {/* ✅ Dynamic Error Message */}
-      {showError && errorMessage && (
+      {showError && (
         <Box display="flex" justifyContent="center">
-          <Text
-            mt={2}
-            fontSize="sm"
-            color="red.500"
-            width="fit-content"
-            textAlign="center"
-          >
-            {errorMessage}
+          <Text mt={2} fontSize="sm" color="red.500">
+            {isEmpty
+              ? "Please enter a value."
+              : "Please enter a number greater than 0."}
           </Text>
         </Box>
       )}
 
-      {/* ✅ Navigation buttons */}
       <Box mt={8}>
         <Button
           colorScheme="gray"
