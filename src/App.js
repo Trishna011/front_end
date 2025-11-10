@@ -4,8 +4,6 @@ import { useState } from "react";
 import LandingPage from "./components/LandingPage";
 import RenoType from "./components/RenoType";
 import PropertySize from "./components/PropertySize";
-import NumBedrooms from "./components/NumBedrooms";
-import NumBathrooms from "./components/NumBathrooms";
 import Location from "./components/Location";
 import SqftToReno from "./components/SqftToReno";
 import SqftToAdd from "./components/SqftToAdd";
@@ -20,7 +18,7 @@ const pageVariants = {
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -80 },
 };
-const pageTransition = { duration: 0.8, ease: "easeInOut" }; // 👈 slightly slower for smoother look
+const pageTransition = { duration: 0.4, ease: "easeInOut" }; // 👈 slightly slower for smoother look
 
 export default function App() {
   const [started, setStarted] = useState(false);
@@ -36,11 +34,11 @@ export default function App() {
     ...data, // ✅ merge field directly instead of nesting under step number
     }));
 
-    if (step < 9) {
+    if (step < 8) {
       setStep(step + 1);
     } else {
       // ✅ After the last step, go to CostPage
-      setStep(10);
+      setStep(8);
     }
   } ;
 
@@ -126,11 +124,7 @@ export default function App() {
           ) : step === 6 ? (
             <PropertySize step={step} onNext={handleNext} onBack={handleBack} />
           ) : step === 7 ? (
-            <Location step={step} onNext={handleNext} onBack={handleBack} />
-          ) : step === 8 ? (
-            <NumBathrooms step={step} onNext={handleNext} onBack={handleBack} />
-          ) : step === 9 ? (
-            <NumBedrooms step={step} onNext={handleNext} onBack={handleBack} answers={answers} />
+            <Location step={step} onNext={handleNext} onBack={handleBack} answers={answers} />
           ):(
             <CostPage step={step} onRestart={startOver} />
           )}
