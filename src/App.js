@@ -94,7 +94,7 @@ export default function App() {
             <Box
               h="100%"
               bg="teal.400"
-              w={`${(step / 10) * 100}%`}
+              w={`${(step / 8) * 100}%`}
               transition="width 0.5s ease-in-out"
             />
           </Box>
