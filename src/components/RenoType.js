@@ -71,7 +71,7 @@ export default function RenoType({ onBack, onNext, step }) {
           rounded="full"
           isDisabled={!selectedOption}
           onClick={() => {
-            if (selectedOption) onNext({ renovationType: selectedOption }); // ✅ send label text to App.js
+            if (selectedOption) onNext({renovation_type: selectedOption }); // ✅ send label text to App.js
           }}
         >
           Next

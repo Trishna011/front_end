@@ -6,43 +6,22 @@ const MotionBox = motion(Box);
 
 export default function Location({ onBack, onNext, answers }) {
   const [selectedOption, setSelectedOption] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const options = [
-    "Manchester City Centre",
-    "Salford",
-    "Stockport",
-    "Bolton",
-    "Bury",
-    "Oldham",
-    "Rochdale",
-    "Tameside",
-    "Trafford",
-    "Wigan",
-    "Altrincham",
-    "Ashton-under-Lye",
-    "Prestwich",
-    "Didsbury",
-    "Chorlton",
-    "Withington",
-    "Levenshulme",
-    "Sale",
-    "Stretford",
-    "Cheadle",
-    "Hale",
-    "Wilmslow",
+    "Manchester City Centre", "Salford", "Stockport", "Bolton", "Bury", "Oldham",
+    "Rochdale", "Tameside", "Trafford", "Wigan", "Altrincham",
+    "Ashton-under-Lyne", "Prestwich", "Didsbury", "Chorlton", "Withington",
+    "Levenshulme", "Sale", "Stretford", "Cheadle", "Hale", "Wilmslow",
   ];
 
   const handleNext = async () => {
     if (!selectedOption) return;
 
-    setIsSubmitting(true);
-
-    // ✅ merge latest answer
-    const updatedAnswers = { ...answers, location: selectedOption };
+    // ✅ Step 1: Update answers and show loading screen
+    const updatedAnswers = { ...answers, Location: selectedOption };
 
     try {
-      // ✅ send to backend API (Express → Python)
+      // ✅ Step 2: Send to backend
       const res = await fetch("http://localhost:4000/api/estimate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -50,21 +29,29 @@ export default function Location({ onBack, onNext, answers }) {
       });
 
       const data = await res.json();
-      // Example response: { estimated_cost: 12345 }
+      if (!res.ok) throw new Error(data.error || "Prediction failed");
 
-      // ✅ pass both location and cost to next step
-      onNext({ location: selectedOption, cost: data.estimated_cost });
+      // ✅ Step 3: Pass both updated answers + cost to parent
+      onNext({
+        cost: data.predicted_cost
+      });
     } catch (err) {
       console.error("Error fetching estimate:", err);
-      onNext({ location: selectedOption, cost: 0 }); // fallback
+      onNext({
+        ...updatedAnswers,
+        cost: 0,
+      });
     } finally {
-      setIsSubmitting(false);
+      
     }
   };
 
+
+
+  // ✅ Step 5: Normal form UI
   return (
     <MotionBox
-      key="question5"
+      key="location"
       initial={{ opacity: 0, y: 80 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -80 }}
@@ -77,14 +64,10 @@ export default function Location({ onBack, onNext, answers }) {
       maxW="700px"
       color="gray.800"
     >
-      <Heading mb={8} textAlign="center">
-        Where is your property?
-      </Heading>
+      <Heading mb={8}>Where is your property?</Heading>
 
-      {/* ✅ Styled native dropdown */}
       <Box
         as="select"
-        placeholder="Select a location"
         size="lg"
         rounded="full"
         bg="white"
@@ -100,17 +83,15 @@ export default function Location({ onBack, onNext, answers }) {
       >
         <option value="">Select a location</option>
         {options
-          .slice()                
-          .sort((a, b) => a.localeCompare(b)) 
+          .slice()
+          .sort((a, b) => a.localeCompare(b))
           .map((option, index) => (
-
-          <option key={index} value={option}>
-            {option}
-          </option>
-        ))}
+            <option key={index} value={option}>
+              {option}
+            </option>
+          ))}
       </Box>
 
-      {/* ✅ Navigation buttons */}
       <Box mt={6}>
         <Button
           colorScheme="gray"
@@ -124,10 +105,8 @@ export default function Location({ onBack, onNext, answers }) {
         <Button
           colorScheme="teal"
           rounded="full"
-          isDisabled={!selectedOption || isSubmitting}
           onClick={handleNext}
-          isLoading={isSubmitting}
-          loadingText="Submitting..."
+          isDisabled={!selectedOption}
         >
           Next
         </Button>

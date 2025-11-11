@@ -67,7 +67,7 @@ export default function StructChanges({ onBack, onNext, step }) {
           rounded="full"
           isDisabled={!selectedOption}
           onClick={() => {
-            if (selectedOption) onNext({structuralChange : selectedOption}); 
+            if (selectedOption) onNext({structural_changes : selectedOption}); 
           }}
         >
           Next

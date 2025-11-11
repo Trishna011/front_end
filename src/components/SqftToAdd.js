@@ -16,7 +16,7 @@ export default function SqftToAdd({ onBack, onNext }) {
       return;
     }
     setShowError(false);
-    onNext({addSqft : addSqft});
+    onNext({sqft_to_add_to_property : parseInt(addSqft)});
   };
 
   const handleInputChange = (e) => {

@@ -19,7 +19,7 @@ export default function PropertySize({ onBack, onNext }) {
       return;
     }
     setShowError(false);
-    onNext({size : size});
+    onNext({property_size : parseInt(size)});
   };
 
   const handleInputChange = (e) => {

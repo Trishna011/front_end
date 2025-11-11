@@ -19,7 +19,7 @@ export default function SqftToReno({ onBack, onNext }) {
       return;
     }
     setShowError(false);
-    onNext({sqft : sqft});
+    onNext({sqft_renovated : parseInt(sqft)});
   };
 
   const handleInputChange = (e) => {

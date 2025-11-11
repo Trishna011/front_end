@@ -68,7 +68,7 @@ export default function MaterialGrade({ onBack, onNext }) {
           rounded="full"
           isDisabled={!selectedOption}
           onClick={() => {
-            if (selectedOption) onNext({materialGrade : selectedOption }); // ✅ trigger next step in App.js
+            if (selectedOption) onNext({material_grade : selectedOption }); // ✅ trigger next step in App.js
           }}
         >
           Next

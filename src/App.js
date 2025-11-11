@@ -126,7 +126,7 @@ export default function App() {
           ) : step === 7 ? (
             <Location step={step} onNext={handleNext} onBack={handleBack} answers={answers} />
           ):(
-            <CostPage step={step} onRestart={startOver} />
+            <CostPage step={step} cost={answers.cost} onRestart={startOver} />
           )}
         </MotionBox>
       </AnimatePresence>
