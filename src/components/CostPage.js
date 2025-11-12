@@ -3,7 +3,13 @@ import { motion } from "framer-motion";
 
 const MotionBox = motion(Box);
 
-export default function CostPage({ cost, onRestart }) {
+export default function CostPage({ cost, onRestart, clearAnswers }) {
+  
+  const handleRestart = () => {
+    clearAnswers();  
+    onRestart();     
+  };
+  
   return (
     <MotionBox
       key="result"
@@ -37,7 +43,7 @@ export default function CostPage({ cost, onRestart }) {
         mt={8}
         colorScheme="teal"
         rounded="full"
-        onClick={onRestart}
+        onClick={handleRestart}
       >
         Start Over
       </Button>

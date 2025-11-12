@@ -29,7 +29,6 @@ export default function RenoType({ onBack, onNext, step }) {
       <Heading mb={8} textAlign="center">
         What would you like to renovate?
       </Heading>
-
       <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={8}>
         {options.map((option) => (
           <MotionBox

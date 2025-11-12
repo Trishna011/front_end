@@ -24,8 +24,9 @@ export default function App() {
   const [started, setStarted] = useState(false);
   const [step, setStep] = useState(1);
   const [answers, setAnswers] = useState({});
-
-
+  const clearAnswers = () => {setAnswers({});
+};
+  
   const handleNext = (data) => {
     
     
@@ -118,7 +119,7 @@ export default function App() {
           ) : step === 3 ? (
             <StructChanges step={step} onNext={handleNext} onBack={handleBack} />
           ) : step === 4 ? (
-            <SqftToReno step={step} onNext={handleNext} onBack={handleBack} />
+            <SqftToReno step={step} onNext={handleNext} onBack={handleBack} answers={answers} />
           ) : step === 5 ? (
             <MaterialGrade step={step} onNext={handleNext} onBack={handleBack} />
           ) : step === 6 ? (
@@ -126,7 +127,7 @@ export default function App() {
           ) : step === 7 ? (
             <Location step={step} onNext={handleNext} onBack={handleBack} answers={answers} />
           ):(
-            <CostPage step={step} cost={answers.cost} onRestart={startOver} />
+            <CostPage step={step} cost={answers.cost} onRestart={startOver} clearAnswers={clearAnswers} />
           )}
         </MotionBox>
       </AnimatePresence>
