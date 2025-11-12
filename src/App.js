@@ -18,8 +18,7 @@ const pageVariants = {
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -80 },
 };
-const pageTransition = { duration: 0.4, ease: "easeInOut" }; // 👈 slightly slower for smoother look
-
+const pageTransition = { duration: 0.4, ease: "easeInOut" };
 export default function App() {
   const [started, setStarted] = useState(false);
   const [step, setStep] = useState(1);
@@ -29,11 +28,9 @@ export default function App() {
   
   const handleNext = (data) => {
     
-    
-    setAnswers((prev) => ({
-    ...prev,
-    ...data, // ✅ merge field directly instead of nesting under step number
-    }));
+    const updatedAnswers = { ...answers, ...data };
+    setAnswers(updatedAnswers);
+    console.log(updatedAnswers);
 
     if (step < 8) {
       setStep(step + 1);
@@ -44,9 +41,27 @@ export default function App() {
   } ;
 
   const handleBack = () => {
-    if (step === 1) setStarted(false);
-    else setStep(step - 1);
-  };
+  if (step === 1) {
+    setStarted(false);
+    return;
+  }
+
+  setAnswers((prev) => {
+    
+    const newAnswers = { ...prev };
+   
+    const keys = Object.keys(newAnswers);
+
+    const lastKey = keys[keys.length - 1];
+    if (lastKey) {
+      delete newAnswers[lastKey];
+    }
+    return newAnswers;
+  });
+
+ 
+  setStep(step - 1);
+};
 
   const startOver = () => {
     setStarted(false); 
