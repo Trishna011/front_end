@@ -37,3 +37,4 @@ deploy_to_s3:
         --paths "/*"
   only:
     - main
+    
