@@ -21,8 +21,9 @@ export default function Location({ onBack, onNext, answers }) {
     const updatedAnswers = { ...answers, Location: selectedOption };
 
     try {
-      // ✅ Step 2: Send to backend
-      const res = await fetch("http://localhost:4000/api/estimate", {
+      // ✅ Step 2: Send to server
+      //http://localhost:4000/api/estimate
+      const res = await fetch("http://13.60.223.46:4000/api/estimate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedAnswers),
