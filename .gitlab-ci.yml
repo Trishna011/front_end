@@ -1,57 +1,41 @@
-# This file defines the CI/CD pipeline for a Node.js/React application.
-# It uses two stages: build and deploy.
+image: node:18
 
-# Define the base image for the jobs
-# Node 18 is a common LTS version suitable for modern React projects.
-image: node:18-alpine
+variables:
+  AWS_ACCESS_KEY_ID: "AKIAUFUUSADPJ7CBCUOH"
+  AWS_SECRET_ACCESS_KEY: "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"
+  AWS_DEFAULT_REGION: "eu-north-1"
+  S3_BUCKET: "property-renovation-app-bucket"
+  CLOUDFRONT_DISTRIBUTION_ID: "E2CZ99XMAGBW3E"
+  BUILD_DIR: "build"
 
-# Define the overall stages of the pipeline
 stages:
   - build
   - deploy
 
-# --- Caching Configuration ---
-# Caching speeds up subsequent runs by saving 'node_modules'
 cache:
-  key: ${CI_COMMIT_REF_SLUG}
   paths:
     - node_modules/
-  policy: pull-push # Pull existing cache, and push a new one if necessary
 
-# --- BUILD STAGE ---
-build-job:
+build_app:
   stage: build
   script:
-    - echo "Starting the Build Stage..."
-    # 1. Install dependencies
     - npm install
-    # 2. Run the build command (creates the production-ready 'build' folder)
     - npm run build
-    - echo "Build successful! Artifacts created."
-  # Artifacts are the output files (the built app) that are passed to the next stage
   artifacts:
     paths:
-      - build/
-    expire_in: 1 day # Save space by expiring artifacts after a day
-  # --- NEW RULE: Run on 'front_end' branch and 'main' ---
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-    - if: $CI_COMMIT_BRANCH == "front_end"
-    - if: $CI_COMMIT_BRANCH =~ /^feature-.*$/  # Optional: also run on any feature branch
-  
-# --- DEPLOY STAGE ---
-# This job is still restricted to only running when code is merged into 'main'.
-deploy-job:
+      - ${BUILD_DIR}/
+  only:
+    - main
+
+deploy_to_s3:
   stage: deploy
-  # This job only runs if it's a commit to the 'main' branch
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+  image: python:3.11
+  before_script:
+    - pip install awscli
   script:
-    - echo "Starting Simulated Deployment to Production..."
-    # The 'build' folder from the previous stage is automatically available here (due to 'artifacts')
-    - echo "Deployment check: Build folder exists."
-    - ls -a build/
-    - echo "Simulated deployment finished successfully for commit on $CI_COMMIT_BRANCH."
-  environment:
-    name: production
-    url: https://main.d3jgiazsmdipw6.amplifyapp.com
+    - aws s3 sync ${BUILD_DIR}/ s3://${S3_BUCKET}/ --delete
+    - aws cloudfront create-invalidation \
+        --distribution-id ${CLOUDFRONT_DISTRIBUTION_ID} \
+        --paths "/*"
+  only:
+    - main
