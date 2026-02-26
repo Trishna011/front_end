@@ -28,7 +28,7 @@ export default function Location({ onBack, onNext, answers }) {
     try {
       // ✅ Step 2: Send to server
       //http://13.60.223.46:4000/api/estimate
-      const res = await fetch("https://final-year-project-1-59em.onrender.com//api/estimate", {
+      const res = await fetch("https://final-year-project-1-59em.onrender.com/api/estimate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedAnswers),
@@ -40,7 +40,7 @@ export default function Location({ onBack, onNext, answers }) {
       const renovationCost = data.total_predicted_cost;
 
       //send all inputs and cost to server to find projected val of property post renovation
-      const valueRes = await fetch("https://final-year-project-1-59em.onrender.com//api/value", {
+      const valueRes = await fetch("https://final-year-project-1-59em.onrender.com/api/value", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
